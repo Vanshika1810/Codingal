@@ -1,0 +1,41 @@
+from sklearn.datasets import load_digits
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+import matplotlib.pyplot as plt
+
+# Step 1: Load dataset
+digits = load_digits()
+
+X = digits.data        # Pixel values
+y = digits.target      # Labels (0–9)
+
+# Step 2: Split data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Step 3: Train model
+model = KNeighborsClassifier(n_neighbors=3)
+model.fit(X_train, y_train)
+
+# Step 4: Predict
+y_pred = model.predict(X_test)
+
+# Step 5: Accuracy
+accuracy = accuracy_score(y_test, y_pred)
+print("Model Accuracy:", accuracy)
+
+# Step 6: Test on one sample
+sample_index = 5
+sample = X_test[sample_index]
+prediction = model.predict([sample])
+
+print("Predicted Digit:", prediction[0])
+print("Actual Digit:", y_test[sample_index])
+
+# Display the digit
+plt.imshow(sample.reshape(8, 8), cmap="gray")
+plt.title(f"Predicted: {prediction[0]}")
+plt.axis("off")
+plt.show()
